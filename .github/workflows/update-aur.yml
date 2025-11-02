@@ -23,7 +23,7 @@ jobs:
             # Update system and install required packages
             pacman -Syu --noconfirm
             pacman -S --noconfirm --needed base-devel git bash openssh sudo
-  
+            
             
             # Set up SSH for AUR deployment
             mkdir -p ~/.ssh
@@ -52,6 +52,13 @@ jobs:
             
             # Check if script succeeded (exit code 0 means changes were made)
             if [ $? -eq 0 ]; then
+              # Check if .SRCINFO and PKGBUILD exists in /home/builder/
+              if [ ! -f /home/builder/.SRCINFO ] || [ ! -f /home/builder/PKGBUILD ]; then
+                echo ".SRCINFO or PKGBUILD not found in builder home directory, so no update is needed"
+                exit 0
+              fi
+            
+            
               # Commit and push changes
               # Clone AUR repo using SSH
               git clone ssh://aur@aur.archlinux.org/printnotes.git aur-printnotes

@@ -26,7 +26,9 @@ new_version=$(grep "^pkgver=" PKGBUILD | cut -d'=' -f2)
 
 # Compare versions
 if [ "$current_version" = "$new_version" ]; then
-    echo "No changes in versione, exiting..."
+    echo "No changes in version, exiting..."
+    rm -f .SRCINFO
+    rm -f PKGBUILD
     exit
 else
     # Update .SRCINFO if version changed
