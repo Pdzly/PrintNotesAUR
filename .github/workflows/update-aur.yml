@@ -50,7 +50,7 @@ jobs:
             # Run the update script as non-root user
             su - builder -c "./update-pkgbuild.sh"
             
-            # Check if script succeeded (exit code 0 means changes were made)
+            # Check if script succeeded
             if [ $? -eq 0 ]; then
               # Check if .SRCINFO and PKGBUILD exists in /home/builder/
               if [ ! -f /home/builder/.SRCINFO ] || [ ! -f /home/builder/PKGBUILD ]; then
@@ -58,6 +58,10 @@ jobs:
                 exit 0
               fi
             
+              cp /home/builder/PKGBUILD /home/builder/.SRCINFO .
+              git add PKGBUILD .SRCINFO
+              git commit -m "Update PKGBUILD and .SRCINFO to latest version"
+              git push origin HEAD
             
               # Commit and push changes
               # Clone AUR repo using SSH
