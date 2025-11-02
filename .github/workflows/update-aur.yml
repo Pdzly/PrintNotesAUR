@@ -23,15 +23,7 @@ jobs:
             # Update system and install required packages
             pacman -Syu --noconfirm
             pacman -S --noconfirm --needed base-devel git bash openssh sudo
-            
-            # Clone yay repository
-            git clone https://aur.archlinux.org/yay.git
-            cd yay
-            
-            # Build and install yay
-            makepkg -si
-            
-            yay -S flutter
+  
             
             # Set up SSH for AUR deployment
             mkdir -p ~/.ssh

@@ -1,4 +1,15 @@
 #!/bin/bash
+          
+# Clone yay repository
+git clone https://aur.archlinux.org/yay.git
+cd yay || exit 1
+
+# Build and install yay
+makepkg -si
+
+yay -S flutter
+
+cd ..
 
 # Get the current version from PKGBUILD
 current_version=$(grep "^pkgver=" PKGBUILD | cut -d'=' -f2)
