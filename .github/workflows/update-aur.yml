@@ -24,6 +24,13 @@ jobs:
             pacman -Syu --noconfirm
             pacman -S --noconfirm --needed base-devel git bash openssh sudo
             
+            # Clone yay repository
+            git clone https://aur.archlinux.org/yay.git
+            cd yay
+            
+            # Build and install yay
+            makepkg -si
+            
             # Set up SSH for AUR deployment
             mkdir -p ~/.ssh
             echo "${{ secrets.AUR_SSH_KEY }}" > ~/.ssh/id_ed25519
