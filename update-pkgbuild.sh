@@ -27,7 +27,7 @@ new_version=$(grep "^pkgver=" PKGBUILD | cut -d'=' -f2)
 # Compare versions
 if [ "$current_version" = "$new_version" ]; then
     echo "No changes in versione, exiting..."
-    exit 1
+    exit
 else
     # Update .SRCINFO if version changed
     makepkg --printsrcinfo > .SRCINFO
