@@ -38,6 +38,8 @@ jobs:
             # Grant sudo access without password for makepkg
             echo "builder ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
             
+            ls
+            
             # Make script executable
             chmod +x update-pkgbuild.sh
             
@@ -62,8 +64,8 @@ jobs:
           
           # Commit and push changes
           cd aur-printnotes
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git config --global user.name 'Rooki'
+          git config --global user.email 'aur@rooki.xyz'
           git add .
           git commit -m "Update package to latest version"
           git push origin master
