@@ -5,7 +5,7 @@ current_version=$(grep "^pkgver=" PKGBUILD | cut -d'=' -f2)
 
 # Build the package
 # Check if build was successful
-if ! makepkg -sfcC; then
+if ! makepkg -sfcCi; then
     echo "Build failed"
     exit 1
 fi
