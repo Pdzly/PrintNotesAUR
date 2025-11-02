@@ -22,7 +22,7 @@ jobs:
           run: |
             # Update system and install required packages
             pacman -Syu --noconfirm
-            pacman -S --noconfirm --needed base-devel git bash openssh
+            pacman -S --noconfirm --needed base-devel git bash openssh sudo
             
             # Set up SSH for AUR deployment
             mkdir -p ~/.ssh
@@ -31,11 +31,18 @@ jobs:
             ssh-keyscan aur.archlinux.org >> ~/.ssh/known_hosts
             chmod 700 ~/.ssh
             
+            # Create a non-root user for building
+            useradd -m -s /bin/bash builder
+            passwd -d builder
+            
+            # Grant sudo access without password for makepkg
+            echo "builder ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+            
             # Make script executable
             chmod +x update-pkgbuild.sh
             
-            # Run the update script
-            ./update-pkgbuild.sh
+            # Run the update script as non-root user
+            su - builder -c "./update-pkgbuild.sh"
             
             # Check if script succeeded (exit code 0 means changes were made)
             if [ $? -eq 0 ]; then
