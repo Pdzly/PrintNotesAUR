@@ -54,7 +54,7 @@ jobs:
               # Commit and push changes
               # Clone AUR repo using SSH
               git clone ssh://aur@aur.archlinux.org/printnotes.git aur-printnotes
-              
+            
               # Copy updated files to AUR repo
               cp /home/builder/PKGBUILD /home/builder/.SRCINFO aur-printnotes/
               cd aur-printnotes
@@ -65,15 +65,5 @@ jobs:
               git push origin master
             else
               echo "No changes detected, skipping deployment" 
+              exit 1
             fi
-   
-      - name: Deploy to AUR (if needed)
-        if: env.deployment_needed == 'true'
-        run: |
-          # Clone AUR repo using SSH
-          git clone ssh://aur@aur.archlinux.org/printnotes.git aur-printnotes
-          
-          # Copy updated files to AUR repo
-          cp PKGBUILD .SRCINFO aur-printnotes/
-          
-          
