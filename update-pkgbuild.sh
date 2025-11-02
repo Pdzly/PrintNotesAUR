@@ -7,7 +7,7 @@ cd yay || exit 1
 # Build and install yay
 makepkg -si --noconfirm
 
-yay -S --noconfirm flutter
+yay -S --noconfirm flutter-bin
 
 cd ..
 
