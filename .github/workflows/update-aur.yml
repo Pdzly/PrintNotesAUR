@@ -43,16 +43,30 @@ jobs:
             # Make script executable
             chmod +x update-pkgbuild.sh
             
+            cp update-pkgbuild.sh /home/builder/
+            cp PKGBUILD /home/builder/
+
             # Run the update script as non-root user
             su - builder -c "./update-pkgbuild.sh"
             
             # Check if script succeeded (exit code 0 means changes were made)
             if [ $? -eq 0 ]; then
-              echo "deployment_needed=true" >> $GITHUB_ENV
+              # Commit and push changes
+              # Clone AUR repo using SSH
+              git clone ssh://aur@aur.archlinux.org/printnotes.git aur-printnotes
+              
+              # Copy updated files to AUR repo
+              cp /home/builder/PKGBUILD /home/builder/.SRCINFO aur-printnotes/
+              cd aur-printnotes
+              git config --global user.name 'Rooki'
+              git config --global user.email 'aur@rooki.xyz'
+              git add .
+              git commit -m "Update package to latest version"
+              git push origin master
             else
-              echo "deployment_needed=false" >> $GITHUB_ENV
+              echo "No changes detected, skipping deployment" 
             fi
-
+   
       - name: Deploy to AUR (if needed)
         if: env.deployment_needed == 'true'
         run: |
@@ -62,10 +76,4 @@ jobs:
           # Copy updated files to AUR repo
           cp PKGBUILD .SRCINFO aur-printnotes/
           
-          # Commit and push changes
-          cd aur-printnotes
-          git config --global user.name 'Rooki'
-          git config --global user.email 'aur@rooki.xyz'
-          git add .
-          git commit -m "Update package to latest version"
-          git push origin master
+          
