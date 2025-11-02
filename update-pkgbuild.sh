@@ -5,9 +5,9 @@ git clone https://aur.archlinux.org/yay.git
 cd yay || exit 1
 
 # Build and install yay
-makepkg -si
+makepkg -si --noconfirm
 
-yay -S flutter
+yay -S --noconfirm flutter
 
 cd ..
 
