@@ -31,6 +31,8 @@ jobs:
             # Build and install yay
             makepkg -si
             
+            yay -S flutter
+            
             # Set up SSH for AUR deployment
             mkdir -p ~/.ssh
             echo "${{ secrets.AUR_SSH_KEY }}" > ~/.ssh/id_ed25519
