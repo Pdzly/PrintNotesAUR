@@ -1,15 +1,17 @@
 # Maintainer: Rooki <aur at rooki dot xyz>
 # Contributor: RoBoT095 <robot095 at users dot noreply dot github dot com>
 pkgname=printnotes-git
+_appname=PrintNotes
 _reponame=printnotes
 pkgver=r215.d23c892
-pkgrel=1
+pkgrel=2
 pkgdesc="A better way to take notes inspired by Google Keep and Obsidian (git version)"
 arch=('x86_64')
 url="https://github.com/RoBoT095/printnotes"
 license=('GPL-3.0-only')
 provides=("${pkgname%-git}=${pkgver}")
 conflicts=("${pkgname%-git}")
+conflicts=("${pkgname%-bin}")
 options=(
     '!strip'
 )
@@ -69,4 +71,6 @@ EOF
   
   # Install icon
   install -m644 assets/app_icon_no-bg.png "${pkgdir}/usr/share/icons/hicolor/512x512/apps/printnotes.png"
+  
+  install -Dm644 LICENSE "${pkgdir}/usr/share/licenses/${_appname}/LICENSE"
 }
