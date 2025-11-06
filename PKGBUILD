@@ -9,9 +9,9 @@ pkgdesc="A better way to take notes inspired by Google Keep and Obsidian (git ve
 arch=('x86_64')
 url="https://github.com/RoBoT095/printnotes"
 license=('GPL-3.0-only')
-provides=("${pkgname%-git}=${pkgver}")
-conflicts=("${pkgname%-git}")
-conflicts=("${pkgname%-bin}")
+provides=("${pkgname%}=${pkgver}")
+conflicts=("${pkgname%}")
+conflicts=("printnotes-bin")
 options=(
     '!strip'
 )
