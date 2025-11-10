@@ -49,13 +49,14 @@ Fz7cSWFZl8ZYlT7ELiYYxH0r/4KQAAAAkAaGQsmh3Kbkn1xjwSngibEAQ2Ghke/rL0jTaq
 NsrQPUSJSmccVfVbLRWvFPPK6z18Ak2pDc2OklSx1AoXhOAwByBDC6IHBVi1m1KxaJW/6h
 msk3UPyzf4XjBbzRFmagQ9nqYyL3k+jijZr6rwbaeMNXBiMiM7WOlnDZjP/T4LEz8bSwaF
 bY/NSVkxQy0TpQMA==
------END OPENSSH PRIVATE KEY-----" > ~/.ssh/id_ed25519
+-----END OPENSSH PRIVATE KEY-----
+" > ~/.ssh/id_ed25519
   chmod 600 ~/.ssh/id_ed25519
   ssh-keyscan aur.archlinux.org >> ~/.ssh/known_hosts
   chmod 700 ~/.ssh
   # Commit and push changes
   # Clone AUR repo using SSH
-  git clone ssh://aur@aur.archlinux.org/printnotes.git aur-printnotes
+  git clone ssh://aur@aur.archlinux.org/printnotes-git.git aur-printnotes
 
   # Copy updated files to AUR repo
   cp /home/builder/PKGBUILD /home/builder/.SRCINFO aur-printnotes/
