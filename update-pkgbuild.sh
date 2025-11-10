@@ -9,12 +9,7 @@ makepkg -si --noconfirm
 
 cd ..
 
-git clone https://aur.archlinux.org/flutter.git
-cd flutter || exit 1
-
-makepkg -si --noconfirm
-
-cd ..
+yay -S --noconfirm flutter-bin
 
 rm -rf yay flutter
 
@@ -64,6 +59,3 @@ elif [ "$aur_pkgrel" != "$current_pkgrel" ]; then
     echo "Package rel build to $current_pkgrel"
 fi
 
-# Clean up temporary files if they exist
-rm -f .SRCINFO
-rm -f PKGBUILD
