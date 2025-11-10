@@ -74,7 +74,7 @@ jobs:
               chmod 700 ~/.ssh
             
               eval "$(ssh-agent -s)"
-              ssh-add ~/.ssh/id_ed25519
+              echo "${{ secrets.AUR_SSH_PASSPHRASE }}" | ssh-add ~/.ssh/id_ed25519
             
               # Commit and push changes
               # Clone AUR repo using SSH
