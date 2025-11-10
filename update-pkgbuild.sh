@@ -16,6 +16,8 @@ makepkg -si --noconfirm
 
 cd ..
 
+rm -rf yay flutter
+
 # Get current version and pkgrel from local PKGBUILD
 current_version=$(grep "^pkgver=" PKGBUILD | cut -d'=' -f2)
 current_pkgrel=$(grep "^pkgrel=" PKGBUILD | cut -d'=' -f2)
