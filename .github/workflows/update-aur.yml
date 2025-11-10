@@ -21,6 +21,7 @@ jobs:
           options: -v ${{ github.workspace }}:/workspace -w /workspace
           run: |
             # Update system and install required packages
+            pacman-key --init
             pacman -Syu --noconfirm
             pacman -S --noconfirm --needed base-devel git bash openssh sudo flutter
             
