@@ -57,7 +57,7 @@ jobs:
                 echo ".SRCINFO or PKGBUILD not found in builder home directory, so no update is needed"
                 exit 0
               fi
-            
+              git config --global --add safe.directory /workspace
               cp /home/builder/PKGBUILD /home/builder/.SRCINFO .
               git add PKGBUILD .SRCINFO
               git commit -m "Update PKGBUILD and .SRCINFO to latest version"
