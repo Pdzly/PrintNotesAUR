@@ -72,6 +72,10 @@ jobs:
               chmod 600 ~/.ssh/id_ed25519
               ssh-keyscan aur.archlinux.org >> ~/.ssh/known_hosts
               chmod 700 ~/.ssh
+            
+              eval "$(ssh-agent -s)"
+              ssh-add ~/.ssh/id_ed25519
+            
               # Commit and push changes
               # Clone AUR repo using SSH
               git clone ssh://aur@aur.archlinux.org/printnotes-git.git aur-printnotes
