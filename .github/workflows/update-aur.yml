@@ -5,7 +5,9 @@ on:
     # Run weekly on Monday at 2 AM UTC
     - cron: '0 2 * * 1'
   workflow_dispatch:
-
+permissions:
+  contents: write  # For reading/writing files and pushing changes
+  deployments: read  # If you're using deployments
 jobs:
   update-aur:
     runs-on: ubuntu-latest
@@ -25,13 +27,6 @@ jobs:
             pacman -Syu --noconfirm
             pacman -S --noconfirm --needed base-devel git bash openssh sudo
             
-            
-            # Set up SSH for AUR deployment
-            mkdir -p ~/.ssh
-            echo "${{ secrets.AUR_SSH_KEY }}" > ~/.ssh/id_ed25519
-            chmod 600 ~/.ssh/id_ed25519
-            ssh-keyscan aur.archlinux.org >> ~/.ssh/known_hosts
-            chmod 700 ~/.ssh
             
             # Create a non-root user for building
             useradd -m -s /bin/bash builder
@@ -58,12 +53,23 @@ jobs:
                 echo ".SRCINFO or PKGBUILD not found in builder home directory, so no update is needed"
                 exit 0
               fi
+              git config --global user.name 'Rooki'
+              git config --global user.email 'aur@rooki.xyz'
+            
               git config --global --add safe.directory /workspace
+            
               cp /home/builder/PKGBUILD /home/builder/.SRCINFO .
               git add PKGBUILD .SRCINFO
               git commit -m "Update PKGBUILD and .SRCINFO to latest version"
               git push origin HEAD
             
+            
+              # Set up SSH for AUR deployment
+              mkdir -p ~/.ssh
+              echo "${{ secrets.AUR_SSH_KEY }}" > ~/.ssh/id_ed25519
+              chmod 600 ~/.ssh/id_ed25519
+              ssh-keyscan aur.archlinux.org >> ~/.ssh/known_hosts
+              chmod 700 ~/.ssh
               # Commit and push changes
               # Clone AUR repo using SSH
               git clone ssh://aur@aur.archlinux.org/printnotes.git aur-printnotes
@@ -71,8 +77,6 @@ jobs:
               # Copy updated files to AUR repo
               cp /home/builder/PKGBUILD /home/builder/.SRCINFO aur-printnotes/
               cd aur-printnotes
-              git config --global user.name 'Rooki'
-              git config --global user.email 'aur@rooki.xyz'
               git add .
               git commit -m "Update package to latest version"
               git push origin master
