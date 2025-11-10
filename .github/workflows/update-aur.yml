@@ -23,7 +23,7 @@ jobs:
             # Update system and install required packages
             pacman-key --init
             pacman -Syu --noconfirm
-            pacman -S --noconfirm --needed base-devel git bash openssh sudo flutter
+            pacman -S --noconfirm --needed base-devel git bash openssh sudo
             
             
             # Set up SSH for AUR deployment

@@ -9,6 +9,13 @@ makepkg -si --noconfirm
 
 cd ..
 
+git clone ssh://aur@aur.archlinux.org/flutter.git
+cd flutter || exit 1
+
+makepkg -si --noconfirm
+
+cd ..
+
 # Get current version and pkgrel from local PKGBUILD
 current_version=$(grep "^pkgver=" PKGBUILD | cut -d'=' -f2)
 current_pkgrel=$(grep "^pkgrel=" PKGBUILD | cut -d'=' -f2)
