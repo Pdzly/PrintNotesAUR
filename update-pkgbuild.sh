@@ -9,7 +9,7 @@ makepkg -si --noconfirm
 
 cd ..
 
-git https://aur.archlinux.org/flutter.git
+git clone https://aur.archlinux.org/flutter.git
 cd flutter || exit 1
 
 makepkg -si --noconfirm
