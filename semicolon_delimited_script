@@ -1,0 +1,70 @@
+# Update system and install required packages
+pacman-key --init
+pacman -Syu --noconfirm
+pacman -S --noconfirm --needed base-devel git bash openssh sudo
+
+
+# Create a non-root user for building
+useradd -m -s /bin/bash builder
+passwd -d builder
+
+# Grant sudo access without password for makepkg
+echo "builder ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+
+ls
+
+# Make script executable
+chmod +x update-pkgbuild.sh
+
+cp update-pkgbuild.sh /home/builder/
+cp PKGBUILD /home/builder/
+
+# Run the update script as non-root user
+su - builder -c "./update-pkgbuild.sh"
+
+# Check if script succeeded
+if [ $? -eq 0 ]; then
+  # Check if .SRCINFO and PKGBUILD exists in /home/builder/
+  if [ ! -f /home/builder/.SRCINFO ] || [ ! -f /home/builder/PKGBUILD ]; then
+    echo ".SRCINFO or PKGBUILD not found in builder home directory, so no update is needed"
+    exit 0
+  fi
+  git config --global user.name 'Rooki'
+  git config --global user.email 'aur@rooki.xyz'
+
+  git config --global --add safe.directory /workspace
+
+  cp /home/builder/PKGBUILD /home/builder/.SRCINFO .
+  git add PKGBUILD .SRCINFO
+  git commit -m "Update PKGBUILD and .SRCINFO to latest version"
+  git push origin HEAD
+
+
+  # Set up SSH for AUR deployment
+  mkdir -p ~/.ssh
+  echo "-----BEGIN OPENSSH PRIVATE KEY-----
+b3BlbnNzaC1rZXktdjEAAAAACmFlczI1Ni1jdHIAAAAGYmNyeXB0AAAAGAAAABDu4yXXus
+I07n+7oBU87hEyAAAAGAAAAAEAAAAzAAAAC3NzaC1lZDI1NTE5AAAAIAFc98ch/rEEseDh
+Fz7cSWFZl8ZYlT7ELiYYxH0r/4KQAAAAkAaGQsmh3Kbkn1xjwSngibEAQ2Ghke/rL0jTaq
+NsrQPUSJSmccVfVbLRWvFPPK6z18Ak2pDc2OklSx1AoXhOAwByBDC6IHBVi1m1KxaJW/6h
+msk3UPyzf4XjBbzRFmagQ9nqYyL3k+jijZr6rwbaeMNXBiMiM7WOlnDZjP/T4LEz8bSwaF
+bY/NSVkxQy0TpQMA==
+-----END OPENSSH PRIVATE KEY-----" > ~/.ssh/id_ed25519
+  chmod 600 ~/.ssh/id_ed25519
+  ssh-keyscan aur.archlinux.org >> ~/.ssh/known_hosts
+  chmod 700 ~/.ssh
+  # Commit and push changes
+  # Clone AUR repo using SSH
+  git clone ssh://aur@aur.archlinux.org/printnotes.git aur-printnotes
+
+  # Copy updated files to AUR repo
+  cp /home/builder/PKGBUILD /home/builder/.SRCINFO aur-printnotes/
+  cd aur-printnotes
+  git add .
+  git commit -m "Update package to latest version"
+  git push origin master
+else
+  echo "No changes detected, skipping deployment" 
+  exit 1
+fi
+
