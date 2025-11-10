@@ -74,7 +74,7 @@ jobs:
               chmod 700 ~/.ssh
               # Commit and push changes
               # Clone AUR repo using SSH
-              git clone ssh://aur@aur.archlinux.org/printnotes.git aur-printnotes
+              git clone ssh://aur@aur.archlinux.org/printnotes-git.git aur-printnotes
             
               # Copy updated files to AUR repo
               cp /home/builder/PKGBUILD /home/builder/.SRCINFO aur-printnotes/
