@@ -13,6 +13,12 @@ yay -S --noconfirm flutter-bin
 
 rm -rf yay flutter
 
+# Build the package
+if ! makepkg -sfcC --noconfirm; then
+    echo "Build failed"
+    exit 1
+fi
+
 # Get current version and pkgrel from local PKGBUILD
 current_version=$(grep "^pkgver=" PKGBUILD | cut -d'=' -f2)
 current_pkgrel=$(grep "^pkgrel=" PKGBUILD | cut -d'=' -f2)
@@ -36,11 +42,6 @@ if [ "$aur_version" = "$current_version" ] && [ "$aur_pkgrel" = "$current_pkgrel
 elif [ "$aur_version" != "$current_version" ]; then
     echo "New version available locally: $current_version (current: $aur_version)"
     # Update the PKGBUILD with new version
-    # Build the package
-    if ! makepkg -sfcC --noconfirm; then
-        echo "Build failed"
-        exit 1
-    fi
     
     # Update .SRCINFO
     makepkg --printsrcinfo > .SRCINFO
