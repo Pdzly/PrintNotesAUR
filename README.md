@@ -1,0 +1,2 @@
+# PrintNotes AUR Package Repository
+[![Update AUR Package](https://github.com/Pdzly/PrintNotesAUR/actions/workflows/update-aur.yml/badge.svg)](https://github.com/Pdzly/PrintNotesAUR/actions/workflows/update-aur.yml)
