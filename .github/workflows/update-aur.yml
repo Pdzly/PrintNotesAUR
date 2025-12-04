@@ -44,8 +44,11 @@ jobs:
             
             cp update-pkgbuild.sh /home/builder/
             cp PKGBUILD /home/builder/
+                   cp printnotes.desktop /home/builder/
             chmod 777 /home/builder/PKGBUILD
             chmod 777 /home/builder/.SRCINFO
+            chmod 777 /home/builder/printnotes.desktop
+
             # Run the update script as non-root user
             su - builder -c "./update-pkgbuild.sh"
             
@@ -61,8 +64,8 @@ jobs:
             
               git config --global --add safe.directory /workspace
             
-              cp /home/builder/PKGBUILD /home/builder/.SRCINFO .
-              git add PKGBUILD .SRCINFO
+              cp /home/builder/PKGBUILD /home/builder/.SRCINFO /home/builder/printnotes.desktop .
+              git add PKGBUILD .SRCINFO printnotes.desktop
               git commit -m "Update PKGBUILD and .SRCINFO to latest version"
               git push origin HEAD
             
@@ -82,7 +85,7 @@ jobs:
               git clone ssh://aur@aur.archlinux.org/printnotes-git.git aur-printnotes
             
               # Copy updated files to AUR repo
-              cp /home/builder/PKGBUILD /home/builder/.SRCINFO aur-printnotes/
+              cp /home/builder/PKGBUILD /home/builder/.SRCINFO /home/builder/printnotes.desktop aur-printnotes/
               cd aur-printnotes
               git add .
               git commit -m "Update package to latest version"
